@@ -1,0 +1,42 @@
+name: 'gostale'
+description: 'Track and enforce TODOs and FIXMEs with expiration dates in Go code.'
+author: 'cbrgm'
+
+inputs:
+  path:
+    description: 'Path or package pattern to analyze (e.g., ./...)'
+    required: false
+    default: '.'
+  today:
+    description: 'Override today’s date (format: DD-MM-YYYY)'
+    required: false
+  exclude:
+    description: 'Comma-separated list of directories to exclude'
+    required: false
+  fail-on-expired:
+    description: 'Exit with code 1 if expired annotations were found'
+    required: false
+    default: "false"
+  log-level:
+    description: 'Log level: debug, info, warn, error'
+    required: false
+    default: "info"
+
+outputs:
+  expired:
+    description: 'Boolean indicating if expired annotations were found'
+
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/cbrgm/gostale:v1'
+  args:
+    - ${{ inputs.path }}
+    - ${{ inputs.today && format('--today={0}', inputs.today) || '' }}
+    - ${{ inputs.exclude && format('--exclude={0}', inputs.exclude) || '' }}
+    - --log-level=${{ inputs['log-level'] }}
+    - ${{ inputs['fail-on-expired'] == 'true' && '--fail-on-expired' || '' }}
+
+branding:
+  icon: alert-triangle
+  color: red
+
