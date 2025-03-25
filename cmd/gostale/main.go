@@ -227,7 +227,7 @@ func collectGoFiles(pattern string, excludes map[string]bool, log *slog.Logger) 
 			if skip {
 				continue
 			}
-			filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+			_ = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 				if err == nil && !info.IsDir() && strings.HasSuffix(path, ".go") {
 					files = append(files, path)
 				}
