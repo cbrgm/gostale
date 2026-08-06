@@ -1,6 +1,6 @@
 module github.com/cbrgm/gostale
 
-go 1.24.0
+go 1.26.5
 
 require github.com/alexflint/go-arg v1.6.1
 
